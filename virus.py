@@ -1,4 +1,4 @@
-from random import random
+from random import random, randint
 import pygame as pg
 
 class Virus():
@@ -41,3 +41,7 @@ class VirusManager():
               self.viruses.append(Virus(virus.x + i, virus.y + j, virus.gen + 1))
   def is_legal(self, x, y):
     return x > 0 and y > 0 and x < self.window.width and y < self.window.height
+
+  def random_start(self, n):
+    for i in range(n):
+      self.viruses.append(Virus(randint(0, self.window.width), randint(0, self.window.height), 0))

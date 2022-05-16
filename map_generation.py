@@ -2,10 +2,6 @@ import pygame as pg
 from useful_functions import point_distance
 
 class Map_generator():
-  def __init__(self, water_ratio, node_size, node_color, window, import pygame as pg
-from useful_functions import point_distance
-
-class Map_generator():
   def __init__(self, cell_size, node_size, node_color, window, land_color):
     self.cell_size = cell_size
     self.node_size = node_size
@@ -38,8 +34,13 @@ class Map_generator():
     for y, line in enumerate(self.land_matrix):
       for x, cell in enumerate(line):
         if cell == 1:
-          pg.draw.rect(self.window.window, self.land_color, (x, y, self.cell_size, self.cell_size))
-
+          pg.draw.rect(self.window.window, self.land_color, (x * self.cell_size, y * self.cell_size, self.cell_size, self.cell_size))
+  def fill_holes(self):
+   for y in range(1, len(self.land_matrix) - 1):
+      for x in range(1, len(self.land_matrix[0]) - 1):
+          if (self.land_matrix[y-1][x] == self.land_matrix[y+1][x] == 1) or (self.land_matrix[y][x-1] == self.land_matrix[y][x+1] == 1):
+              self.land_matrix[y][x] = 1
+              
 class Node():
   def __init__(self, size, color, location):
     self.size = size

@@ -10,12 +10,13 @@ class Virus():
     self.state = "alive"
 
 class VirusManager():
-  def __init__(self, lm, window):
+  def __init__(self, lm, window, sc, pr):
     self.lm = lm
     self.window = window
     
     self.viruses = []
-    self.survival_chance = 0.97
+    self.survival_chance = sc
+    self.propagation_radius = pr
 
   def main_cycle(self):
     for n in range(len(self.viruses)):
@@ -32,8 +33,8 @@ class VirusManager():
         virus.state = "corpse"
     self.viruses = [virus for virus in self.viruses if virus.state != "corpse"]
   def propagate(self, virus):
-    for i in range(-1, 2):
-      for j in range(-1, 2):
+    for i in range(-self.propagation_radius, self.propagation_radius+1):
+      for j in range(-self.propagation_radius, self.propagation_radius+1):
         if self.is_legal(virus.x + i, virus.y + j):
           if random() < self.survival_chance ** virus.gen:
             if self.is_legal(virus.x + i, virus.y + j):

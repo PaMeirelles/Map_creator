@@ -4,7 +4,7 @@ from map_generation import Map_generator
 win = Window(600, 400, ((220, 230, 250)))
 
 
-mg = Map_generator(0.5, 2, (0, 0, 0))
+mg = Map_generator(0.5, 2, (0, 0, 0), win)
 mg.create_node((200, 200))
 
 running = True
@@ -17,7 +17,7 @@ while running:
         mg.create_node(mouse_location)
     if e.type == pg.QUIT:
       running = False
-  mg.draw_nodes(win.window)
+  mg.draw_nodes()
   pg.display.update()
 
 pg.quit()

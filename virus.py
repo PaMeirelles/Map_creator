@@ -1,8 +1,3 @@
-from random import random, randint
-import pygame as pg
-
-class Virus():
-  def __init__(self, x, y, gen):
     self.x = x
     self.y = y
     self.gen = gen
@@ -10,31 +5,32 @@ class Virus():
     self.state = "alive"
 
 class VirusManager():
-  def __init__(self, lm, window, sc, pr):
+  def __init__(self, lm, window, sc, pr, cell_size):
     self.lm = lm
     self.window = window
-    
-    self.viruses = []
     self.survival_chance = sc
     self.propagation_radius = pr
+    self.cell_size = cell_size
+    
+    self.viruses = []
 
   def main_cycle(self):
     for n in range(len(self.viruses)):
       virus = self.viruses[n]
-      if self.lm[virus.y][virus.x] == 1:
+      if self.lm[virus.y // self.cell_size][virus.x // self.cell_size] == 1:
           virus.state = "corpse"
       if virus.state == "alive":
-        self.lm[virus.y][virus.x] = 1
-        pg.draw.rect(self.window.window, (80, 20, 20), (virus.x, virus.y, 1, 1),)
+        self.lm[virus.y // self.cell_size][virus.x // self.cell_size] = 1
+        pg.draw.rect(self.window.window, (80, 20, 20), (virus.x, virus.y, self.cell_size, self.cell_size),)
         self.propagate(virus)
         virus.state = "dead"
       else:
-        pg.draw.rect(self.window.window, (155, 155, 100), (virus.x, virus.y, 1, 1))
+        pg.draw.rect(self.window.window, (155, 155, 100), (virus.x, virus.y, self.cell_size, self.cell_size))
         virus.state = "corpse"
     self.viruses = [virus for virus in self.viruses if virus.state != "corpse"]
   def propagate(self, virus):
-    for i in range(-self.propagation_radius, self.propagation_radius+1):
-      for j in range(-self.propagation_radius, self.propagation_radius+1):
+    for i in range(-self.propagation_radius * self.cell_size, self.propagation_radius*self.cell_size+1, self.cell_size):
+      for j in range(-self.propagation_radius * self.cell_size, self.propagation_radius*self.cell_size+1, self.cell_size):
         if self.is_legal(virus.x + i, virus.y + j):
           if random() < self.survival_chance ** virus.gen:
             if self.is_legal(virus.x + i, virus.y + j):

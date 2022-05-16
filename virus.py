@@ -1,3 +1,8 @@
+from random import random, randint
+import pygame as pg
+
+class Virus():
+  def __init__(self, x, y, gen):
     self.x = x
     self.y = y
     self.gen = gen
@@ -17,10 +22,10 @@ class VirusManager():
   def main_cycle(self):
     for n in range(len(self.viruses)):
       virus = self.viruses[n]
-      if self.lm[virus.y // self.cell_size][virus.x // self.cell_size] == 1:
+      if self.lm[virus.y // self.cell_size - 1][virus.x // self.cell_size - 1] == 1:
           virus.state = "corpse"
       if virus.state == "alive":
-        self.lm[virus.y // self.cell_size][virus.x // self.cell_size] = 1
+        self.lm[virus.y // self.cell_size - 1][virus.x // self.cell_size - 1] = 1
         pg.draw.rect(self.window.window, (80, 20, 20), (virus.x, virus.y, self.cell_size, self.cell_size),)
         self.propagate(virus)
         virus.state = "dead"

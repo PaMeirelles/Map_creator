@@ -1,4 +1,5 @@
 import pygame as pg
+from useful_functions import point_distance
 
 class Map_generator():
   def __init__(self, water_ratio, node_size, node_color):
@@ -9,6 +10,15 @@ class Map_generator():
 
   def create_node(self, location):
     self.node_list.append(Node(self.node_size, self.node_color, location))
+    
+  def delete_node(self, location, margin_of_error):
+    for node in self.node_list:
+      if point_distance(node.location, location) < self.node_size * (1 + margin_of_error):
+        self.node_list.remove(node)
+        self.delete_node(location, margin_of_error)
+        return 1
+    return 0
+        
   def draw_nodes(self, window):
     for node in self.node_list:
       node.draw(window)
